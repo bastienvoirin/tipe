@@ -1,4 +1,5 @@
-float x, x1, x2, y, a, b, c, delta, asq, bsq, u, v, g, d, gsq, dsq;
+float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, gsq, dsq;
+int t;
 
 void setup() {
   size(800, 800);
@@ -13,7 +14,6 @@ void draw() {
 }
 
 void mouseDragged() {
-  erase();
   mousePressed();
 }
 
@@ -69,7 +69,7 @@ void hyperbolas(float a, float b) {
   asq = a * a;
   bsq = b * b;
   
-  for(int t = -400; t < 400; t++) {
+  for(t = -400; t < 400; t++) {
     // Branche d'hyperbole définie par L(-2,0), C(0,0) et g
     v = t/200.0;
     u = asq * ( 1.0 + v * v / (1 - asq) );

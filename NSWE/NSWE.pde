@@ -1,4 +1,5 @@
-float x, y, alpha, beta, alphasq, betasq, lambda, a, b, asq, bsq, u, v;
+float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v;
+int t;
 
 void setup() {
   size(800, 800);
@@ -62,8 +63,7 @@ void hyperbolas(float a, float b) {
   asq = a * a;
   bsq = b * b;
   
-  // 800 points
-  for(int t = -400; t < 400; t++) {
+  for(t = -400; t < 400; t++) {
     // Branche d'hyperbole définie par W(-1,0), E(1,0) et alpha
     v = t/400.0;
     u = 1.0 + v * v / (1.0 - asq);
