@@ -39,7 +39,7 @@ void mousePressed() {
   
   b = 2 * (gsq + dsq - 2*gsq*dsq) / (dsq - gsq);
   c = 1 - gsq*dsq;
-  delta = b*b - 4*c;
+  delta = b * b - 4 * c;
   
   x = - b / 2;
   x1 = x - sqrt(delta) / 2;
@@ -50,7 +50,7 @@ void mousePressed() {
   }
   y = sqrt( (1-gsq) * ((x+1)*(x+1)/gsq - 1) );
   
-  ellipse(x*200.0 + 400.0, 400.0 - y*200.0, 10.0, 10.0);
+  ellipse((x + 2.0)*200.0, (2.0 - y)*200.0, 10.0, 10.0);
   
   // Tracé des branches d'hyperboles
   hyperbolas(g, d);
@@ -70,15 +70,15 @@ void hyperbolas(float a, float b) {
   bsq = b * b;
   
   for(int t = -400; t < 400; t++) {
-    // Branche d'hyperbole définie par (-2,0), (0,0) et g
+    // Branche d'hyperbole définie par L(-2,0), C(0,0) et g
     v = t/200.0;
-    u = asq * ( 1.0 + v*v / (1 - asq) );
+    u = asq * ( 1.0 + v * v / (1 - asq) );
     u = - 1.0 + sqrt(u);
     if(g <= 0) u = - 2.0 - u;
     point((u + 2.0)*200.0, (2.0 - v)*200.0);
     
-    // Branche d'hyperbole définie par (0,0), (2,0) et d
-    u = bsq * ( 1.0 + v*v / (1 - bsq) );
+    // Branche d'hyperbole définie par C(0,0), R(2,0) et d
+    u = bsq * ( 1.0 + v * v / (1 - bsq) );
     u = 1.0 + sqrt(u);
     if(d <= 0) u = 2.0 - u;
     point((u + 2.0)*200.0, (2.0 - v)*200.0);

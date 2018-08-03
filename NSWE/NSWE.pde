@@ -1,4 +1,4 @@
-float x, y, alpha, beta, alphasq, betasq, Lambda, a, b, asq, bsq, u, v;
+float x, y, alpha, beta, alphasq, betasq, lambda, a, b, asq, bsq, u, v;
 
 void setup() {
   size(800, 800);
@@ -32,14 +32,15 @@ void mousePressed() {
   rect(400.0, 398.0, (alpha + 1.0)*400.0, 402.0);
   rect(398.0, 400.0, 402.0,  (1.0 - beta)*400.0);
   
+  // Calcul de (x, y)
   alphasq = alpha * alpha;
   betasq  = beta  * beta;
   
-  Lambda  = 2*alphasq*betasq;
-  Lambda /= (1 - alphasq - betasq);
+  lambda  = 2 * alphasq * betasq;
+  lambda /= (1 - alphasq - betasq);
   
-  x = alpha * sqrt(1 + betasq  + Lambda);
-  y = beta  * sqrt(1 + alphasq + Lambda);
+  x = alpha * sqrt(1 + betasq  + lambda);
+  y = beta  * sqrt(1 + alphasq + lambda);
   
   ellipse((x + 1.0)*400.0, (1.0 - y)*400.0, 10.0, 10.0);
   
@@ -63,16 +64,16 @@ void hyperbolas(float a, float b) {
   
   // 800 points
   for(int t = -400; t < 400; t++) {
-    // Branche d'hyperbole définie par (-1,0), (1,0) et alpha
+    // Branche d'hyperbole définie par W(-1,0), E(1,0) et alpha
     v = t/400.0;
-    u = 1.0 + v*v/(1.0 - asq);
+    u = 1.0 + v * v / (1.0 - asq);
     u = sqrt(asq*u);
     if(alpha < 0.0) u = -u;
     point((u + 1.0)*400.0, (1.0 - v)*400.0);
     
-    // Branche d'hyperbole définie par (0,-1), (0,1) et bêta
+    // Branche d'hyperbole définie par S(0,-1), N(0,1) et bêta
     u = t/400.0;
-    v = 1.0 + u*u/(1.0 - bsq);
+    v = 1.0 + u * u / (1.0 - bsq);
     v = sqrt(bsq*v);
     if(beta < 0.0) v = -v;
     point((u + 1.0)*400.0, (1.0 - v)*400.0);
