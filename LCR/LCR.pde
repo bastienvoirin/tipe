@@ -48,7 +48,7 @@ void mousePressed() {
   if((g >= 0 && x1 <= -1.0) || (d >= 0 && x1 <= 1.0)) {
     x = x2;
   }
-  y = sqrt( (1-gsq) * ((x+1)*(x+1)/gsq - 1) );
+  y = sqrt( (1-gsq) * ((x+1) * (x+1) / gsq - 1) );
   
   ellipse((x + 2.0)*200.0, (2.0 - y)*200.0, 10.0, 10.0);
   
@@ -57,10 +57,10 @@ void mousePressed() {
 }
 
 void erase() {
-  background(255,0.0);
+  background(255); // Fond blanc
   
-  line(0,400,800,400); // Axe des abscisses
-  line(400,0,400,800); // Axe des ordonnées
+  line(  0, 400, 800, 400); // Axe des abscisses
+  line(400,   0, 400, 800); // Axe des ordonnées
   
   ellipse(  0.0, 400.0, 10.0, 10.0); // L
   ellipse(400.0, 400.0, 10.0, 10.0); // C

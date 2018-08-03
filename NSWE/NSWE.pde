@@ -52,12 +52,12 @@ void mousePressed() {
 void erase() {
   background(255); // Fond blanc
   
-  line(0,400,800,400); // Axe des abscisses
-  line(400,0,400,800); // Axe des ordonnées
+  line(  0, 400, 800, 400); // Axe des abscisses
+  line(400,   0, 400, 800); // Axe des ordonnées
   
-  ellipse(400.0, 0.0, 10.0, 10.0);   // N
+  ellipse(400.0,   0.0, 10.0, 10.0); // N
   ellipse(400.0, 800.0, 10.0, 10.0); // S
-  ellipse(0.0, 400.0, 10.0, 10.0);   // W
+  ellipse(  0.0, 400.0, 10.0, 10.0); // W
   ellipse(800.0, 400.0, 10.0, 10.0); // E
 }
 
@@ -69,14 +69,14 @@ void hyperbolas(float a, float b) {
     // Branche d'hyperbole définie par W(-1,0), E(1,0) et alpha
     v = t / 400.0;
     u = 1.0 + v * v / (1.0 - asq);
-    u = sqrt(asq*u);
+    u = sqrt(asq * u);
     if(alpha < 0.0) u = -u;
     point((u + 1.0)*400.0, (1.0 - v)*400.0);
     
     // Branche d'hyperbole définie par S(0,-1), N(0,1) et bêta
     u = t / 400.0;
     v = 1.0 + u * u / (1.0 - bsq);
-    v = sqrt(bsq*v);
+    v = sqrt(bsq * v);
     if(beta < 0.0) v = -v;
     point((u + 1.0)*400.0, (1.0 - v)*400.0);
   }
