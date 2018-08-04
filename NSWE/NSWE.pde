@@ -1,8 +1,10 @@
-float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v;
+float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v, e, count1, count2, count3, count4;
 float[] pos = new float[2];
 int t;
 
 void setup() {
+  sample();
+  
   size(800, 800);
   rectMode(CORNERS);
   stroke(0);
@@ -39,7 +41,7 @@ void mousePressed() {
   x = pos[0];
   y = pos[1];
   
-  ellipse((x + 1.0)*400.0, (1.0 - y)*400.0, 10.0, 10.0);
+  ellipse((x + 1.0) * 400.0, (1.0 - y) * 400.0, 10.0, 10.0);
   
   // Tracé des branches d'hyperboles
   hyperbolas(alpha, beta);
@@ -88,4 +90,35 @@ void hyperbolas(float a, float b) {
     if(beta < 0.0) v = -v;
     point((u + 1.0)*400.0, (1.0 - v)*400.0);
   }
+}
+
+void sample() {
+  count1 = 0;
+  count2 = 0;
+  count3 = 0;
+  count4 = 0;
+  
+  for(t = 0; t < 1000000; t++) {
+    x = random(-1.0, 1.0);
+    x = x * abs(x) * 2.0;
+    y = random(-1.0, 1.0);
+    y = y * abs(y) * 2.0;
+    
+    // Calcul de (alpha, bêta)
+    alpha = (dist(-1.0, 0.0, x, y) - dist(1.0, 0.0, x, y)) / 2.0;
+    beta  = (dist(0.0, -1.0, x, y) - dist(0.0, 1.0, x, y)) / 2.0;
+    
+    pos = solve(alpha, beta);
+    
+    e = dist(x, y, pos[0], pos[1]);
+    if(e > 1.0)   count1++;
+    if(e > 0.1)   count2++;
+    if(e > 0.01)  count3++;
+    if(e > 0.001) count4++;
+  }
+  
+  println(1.0, "  ", count1 / t * 100, '%');
+  println(0.1, "  ", count2 / t * 100, '%');
+  println(0.01, " ", count3 / t * 100, '%');
+  println(0.001, "", count4 / t * 100, '%');
 }

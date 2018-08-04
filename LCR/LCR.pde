@@ -1,8 +1,10 @@
-float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, lsq, rsq;
+float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, lsq, rsq, e, count;
 float pos[] = new float[2];
 int t;
 
 void setup() {
+  sample();
+  
   size(800, 800);
   rectMode(CORNERS);
   stroke(0);
@@ -27,19 +29,19 @@ void mousePressed() {
   
   // Calcul de (g, d)
   g = (dist(-2.0, 0.0, x, y) - dist(0.0, 0.0, x, y)) / 2.0;
-  d = (dist(0.0, 0.0, x, y) - dist(2.0, 0.0, x, y)) / 2.0;
+  d = (dist( 0.0, 0.0, x, y) - dist(2.0, 0.0, x, y)) / 2.0;
   
   // Visualisation de (g, d)
   fill(0);
-  rect(200.0, 398.0, (g + 1.0)*200.0, 402.0);
-  rect(600.0, 398.0, (d + 3.0)*200.0, 402.0);
+  rect(200.0, 398.0, (g + 1.0) * 200.0, 402.0);
+  rect(600.0, 398.0, (d + 3.0) * 200.0, 402.0);
   
   // Calcul de (x, y)
   pos = solve(g, d);
   x = pos[0];
   y = pos[1];
   
-  ellipse((x + 2.0)*200.0, (2.0 - y)*200.0, 10.0, 10.0);
+  ellipse((x + 2.0) * 200.0, (2.0 - y) * 200.0, 10.0, 10.0);
   
   // Tracé des branches d'hyperboles
   hyperbolas(g, d);
@@ -50,7 +52,7 @@ float[] solve(float l, float r) {
   rsq = r * r;
   
   // Coefficients et discriminant de l'équation du second degré d'inconnue x
-  b = 2 * (lsq + rsq - 2*lsq*rsq) / (rsq - lsq);
+  b = 2 * (lsq + rsq - 2 * lsq * rsq) / (rsq - lsq);
   c = 1 - lsq * rsq;
   delta = b * b - 4 * c;
   
@@ -89,12 +91,34 @@ void hyperbolas(float a, float b) {
     u = asq * ( 1.0 + v * v / (1 - asq) );
     u = - 1.0 + sqrt(u);
     if(g <= 0) u = - 2.0 - u;
-    point((u + 2.0)*200.0, (2.0 - v)*200.0);
+    point((u + 2.0) * 200.0, (2.0 - v) * 200.0);
     
     // Branche d'hyperbole définie par C(0,0), R(2,0) et d
     u = bsq * ( 1.0 + v * v / (1 - bsq) );
     u = 1.0 + sqrt(u);
     if(d <= 0) u = 2.0 - u;
-    point((u + 2.0)*200.0, (2.0 - v)*200.0);
+    point((u + 2.0) * 200.0, (2.0 - v) * 200.0);
   }
+}
+
+void sample() {
+  count = 0;
+  
+  for(t = 0; t < 1000000; t++) {
+    x = random(-1.0, 1.0);
+    x = x * abs(x) * 10.0;
+    y = random(0, 1.0);
+    y = y * y * 10.0;
+    
+    // Calcul de (g, d)
+    g = (dist(-2.0, 0.0, x, y) - dist(0.0, 0.0, x, y)) / 2.0;
+    d = (dist( 0.0, 0.0, x, y) - dist(2.0, 0.0, x, y)) / 2.0;
+    
+    pos = solve(g, d);
+    
+    e = dist(x, y, pos[0], pos[1]);
+    if(e > 0.0) count++;
+  }
+  
+  println(t, count, count / t * 100, '%');
 }
