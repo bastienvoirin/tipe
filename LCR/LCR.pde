@@ -1,4 +1,4 @@
-float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, lsq, rsq, e, count;
+float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, lsq, rsq, error, count;
 float pos[] = new float[2];
 int t;
 
@@ -102,13 +102,11 @@ void hyperbolas(float a, float b) {
 }
 
 void sample() {
-  count = 0;
+  count = 0.0;
   
   for(t = 0; t < 1000000; t++) {
     x = random(-1.0, 1.0);
-    x = x * abs(x) * 10.0;
-    y = random(0, 1.0);
-    y = y * y * 10.0;
+    y = random(   0, 1.0);
     
     // Calcul de (g, d)
     g = (dist(-2.0, 0.0, x, y) - dist(0.0, 0.0, x, y)) / 2.0;
@@ -116,9 +114,9 @@ void sample() {
     
     pos = solve(g, d);
     
-    e = dist(x, y, pos[0], pos[1]);
-    if(e > 0.0) count++;
+    error = dist(x, y, pos[0], pos[1]);
+    if(error > 0.0) count++;
   }
   
-  println(t, count, count / t * 100, '%');
+  println(count / t * 100, "%");
 }

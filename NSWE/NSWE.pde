@@ -1,4 +1,4 @@
-float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v, e, count1, count2, count3, count4;
+float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v, error, avg, maxerror;
 float[] pos = new float[2];
 int t;
 
@@ -28,8 +28,8 @@ void mousePressed() {
   y = (400.0 - mouseY) / 400.0;
   
   // Calcul de (alpha, bêta)
-  alpha = (dist(-1.0, 0.0, x, y) - dist(1.0, 0.0, x, y)) / 2.0;
-  beta  = (dist(0.0, -1.0, x, y) - dist(0.0, 1.0, x, y)) / 2.0;
+  alpha = (dist(-1.0,  0.0, x, y) - dist(1.0, 0.0, x, y)) / 2.0;
+  beta  = (dist( 0.0, -1.0, x, y) - dist(0.0, 1.0, x, y)) / 2.0;
   
   // Visualisation de (alpha, bêta)
   fill(0);
@@ -93,32 +93,24 @@ void hyperbolas(float a, float b) {
 }
 
 void sample() {
-  count1 = 0;
-  count2 = 0;
-  count3 = 0;
-  count4 = 0;
+  avg      = 0.0;
+  maxerror = 0.0;
   
   for(t = 0; t < 1000000; t++) {
     x = random(-1.0, 1.0);
-    x = x * abs(x) * 2.0;
     y = random(-1.0, 1.0);
-    y = y * abs(y) * 2.0;
     
     // Calcul de (alpha, bêta)
-    alpha = (dist(-1.0, 0.0, x, y) - dist(1.0, 0.0, x, y)) / 2.0;
-    beta  = (dist(0.0, -1.0, x, y) - dist(0.0, 1.0, x, y)) / 2.0;
+    alpha = (dist(-1.0,  0.0, x, y) - dist(1.0, 0.0, x, y)) / 2.0;
+    beta  = (dist( 0.0, -1.0, x, y) - dist(0.0, 1.0, x, y)) / 2.0;
     
     pos = solve(alpha, beta);
     
-    e = dist(x, y, pos[0], pos[1]);
-    if(e > 1.0)   count1++;
-    if(e > 0.1)   count2++;
-    if(e > 0.01)  count3++;
-    if(e > 0.001) count4++;
+    error = dist(x, y, pos[0], pos[1]);
+    avg  += error;
+    if(error > maxerror) maxerror = error;
   }
   
-  println(1.0, "  ", count1 / t * 100, '%');
-  println(0.1, "  ", count2 / t * 100, '%');
-  println(0.01, " ", count3 / t * 100, '%');
-  println(0.001, "", count4 / t * 100, '%');
+  avg /= 1000000;
+  println(avg, maxerror);
 }
