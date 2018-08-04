@@ -1,4 +1,5 @@
-float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, gsq, dsq;
+float x, x1, x2, y, b, c, delta, asq, bsq, u, v, g, d, lsq, rsq;
+float pos[] = new float[2];
 int t;
 
 void setup() {
@@ -27,17 +28,30 @@ void mousePressed() {
   // Calcul de (g, d)
   g = (dist(-2.0, 0.0, x, y) - dist(0.0, 0.0, x, y)) / 2.0;
   d = (dist(0.0, 0.0, x, y) - dist(2.0, 0.0, x, y)) / 2.0;
-  gsq = g * g;
-  dsq = d * d;
   
   // Visualisation de (g, d)
   fill(0);
   rect(200.0, 398.0, (g + 1.0)*200.0, 402.0);
   rect(600.0, 398.0, (d + 3.0)*200.0, 402.0);
   
+  // Calcul de (x, y)
+  pos = solve(g, d);
+  x = pos[0];
+  y = pos[1];
+  
+  ellipse((x + 2.0)*200.0, (2.0 - y)*200.0, 10.0, 10.0);
+  
+  // Tracé des branches d'hyperboles
+  hyperbolas(g, d);
+}
+
+float[] solve(float l, float r) {
+  lsq = l * l;
+  rsq = r * r;
+  
   // Coefficients et discriminant de l'équation du second degré d'inconnue x
-  b = 2 * (gsq + dsq - 2*gsq*dsq) / (dsq - gsq);
-  c = 1 - gsq*dsq;
+  b = 2 * (lsq + rsq - 2*lsq*rsq) / (rsq - lsq);
+  c = 1 - lsq * rsq;
   delta = b * b - 4 * c;
   
   // Résolution de l'équation
@@ -45,15 +59,13 @@ void mousePressed() {
   x1 = x - sqrt(delta) / 2;
   x2 = x + sqrt(delta) / 2;
   x = x1;
-  if((g >= 0 && x1 <= -1.0) || (d >= 0 && x1 <= 1.0)) {
-    x = x2;
-  }
-  y = sqrt( (1-gsq) * ((x+1) * (x+1) / gsq - 1) );
+  if((l >= 0 && x1 <= -1.0) || (r >= 0 && x1 <= 1.0)) x = x2;
+  y = sqrt( (1 - lsq) * ((x + 1) * (x + 1) / lsq - 1) );
   
-  ellipse((x + 2.0)*200.0, (2.0 - y)*200.0, 10.0, 10.0);
+  pos[0] = x;
+  pos[1] = y;
   
-  // Tracé des branches d'hyperboles
-  hyperbolas(g, d);
+  return pos;
 }
 
 void erase() {

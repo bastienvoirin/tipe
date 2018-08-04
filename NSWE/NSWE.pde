@@ -1,4 +1,5 @@
 float x, y, alpha, beta, alphasq, betasq, lambda, asq, bsq, u, v;
+float[] pos = new float[2];
 int t;
 
 void setup() {
@@ -34,19 +35,26 @@ void mousePressed() {
   rect(398.0, 400.0, 402.0,  (1.0 - beta)*400.0);
   
   // Calcul de (x, y)
-  
-  alphasq = alpha * alpha;
-   betasq = beta  * beta;
-  
-  lambda = (2 * alphasq * betasq) / (1 - alphasq - betasq);
-  
-  x = alpha * sqrt(1 +  betasq + lambda);
-  y = beta  * sqrt(1 + alphasq + lambda);
+  pos = solve(alpha, beta);
+  x = pos[0];
+  y = pos[1];
   
   ellipse((x + 1.0)*400.0, (1.0 - y)*400.0, 10.0, 10.0);
   
   // Tracé des branches d'hyperboles
   hyperbolas(alpha, beta);
+}
+
+float[] solve(float a, float b) {
+  asq = a * a;
+  bsq = b * b;
+   
+  lambda = (2 * asq * bsq) / (1 - asq - bsq);
+  
+  pos[0] = a * sqrt(1 + bsq + lambda); // x
+  pos[1] = b * sqrt(1 + asq + lambda); // y
+  
+  return pos;
 }
 
 void erase() {
